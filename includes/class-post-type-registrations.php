@@ -64,14 +64,15 @@ class Documentation_Post_Type_Registrations {
 		);
 
 		$args = array(
-			'labels'          => $labels,
-			'supports'        => $supports,
-			'public'          => true,
 			'capability_type' => 'post',
-			'rewrite'         => array( 'slug' => 'documentation', ), // Permalinks format
-			'menu_position'   => 30,
+			'has_archive'     => true,
+			'labels'          => $labels,
 			'menu_icon'       => 'dashicons-book',
-			'has_archive'	  => true
+			'menu_position'   => 30,
+			'public'          => true,
+			'rewrite'         => array( 'slug' => 'documentation', ), // Permalinks format
+			'show_in_rest'    => true,
+			'supports'        => $supports
 		);
 
 		$args = apply_filters( 'documentation_post_type_args', $args );

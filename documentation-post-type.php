@@ -7,11 +7,11 @@
  *
  * @wordpress-plugin
  * Plugin Name: Documentation Post Type
- * Plugin URI:  http://github.com/devinsays/documentation-post-type
+ * Plugin URI:  https://github.com/Automattic/documentation-post-type
  * Description: Enables a post type for documentation and related taxonomies.
- * Version:     0.1.0
- * Author:      Devin Price
- * Author URI:  http://github.com/devinsays/documentation-post-type
+ * Version:     1.0.0
+ * Author:      Automattic
+ * Author URI:  https://github.com/Automattic/documentation-post-type
  * Text Domain: documentation-post-type
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt

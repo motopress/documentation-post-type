@@ -34,6 +34,9 @@ class Documentation_Post_Type {
 	 */
 	const PLUGIN_SLUG = 'documentation-post-type';
 
+	/*
+	 * Documentation_Post_Type_Registrations
+	 */
 	protected $registration_handler;
 
 	/**
@@ -47,6 +50,8 @@ class Documentation_Post_Type {
 
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );;
+
+		add_filter( 'post_type_link', array( $this, 'post_type_link' ), 1, 2 );
 
 	}
 
@@ -80,6 +85,26 @@ class Documentation_Post_Type {
 
 		load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' );
 		load_plugin_textdomain( $domain, FALSE, dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages' );
+	}
+
+	/**
+	 * Add a filter to post_type_link to substitute the category in individual permalinks
+	 *
+	 * @link https://wordpress.stackexchange.com/questions/108642/permalinks-custom-post-type-custom-taxonomy-post
+	 *
+	 */
+	public function post_type_link(  $post_link, $post  ) {
+
+		if ( is_object( $post ) && $post->post_type == $this->registration_handler->post_type ) {
+
+			$terms = wp_get_object_terms( $post->ID, Documentation_Post_Type_Registrations::DOCUMENTATION_CATEGORY );
+
+			if( $terms ) {
+				return str_replace( '%documentation_category%' , $terms[0]->slug , $post_link );
+			}
+		}
+
+		return $post_link;
 	}
 
 }

@@ -13,9 +13,17 @@
  */
 class Documentation_Post_Type_Registrations {
 
+	const POST_TYPE = 'documentation';
+
+	const DOCUMENTATION_CATEGORY = 'documentation-category';
+
+	const DOCUMENTATION_TAG = 'documentation-tag';
+
+	const PRODUCT_TAG = 'product-tag';
+
 	public $post_type = 'documentation';
 
-	public $taxonomies = array( 'documentation-category', 'documentation-tag', 'product-tag' );
+	public $taxonomies = array( self::DOCUMENTATION_CATEGORY, self::DOCUMENTATION_TAG, self::PRODUCT_TAG );
 
 	public function init() {
 		// Add the team post type and taxonomies
@@ -30,10 +38,11 @@ class Documentation_Post_Type_Registrations {
 	 * @uses Documentation_Post_Type_Registrations::register_taxonomy_product_tags()
 	 */
 	public function register() {
-		$this->register_post_type();
 		$this->register_taxonomy_categories();
 		$this->register_taxonomy_tags();
 		$this->register_taxonomy_product_tags();
+
+		$this->register_post_type();
 	}
 
 	/**
@@ -61,16 +70,17 @@ class Documentation_Post_Type_Registrations {
 			'thumbnail',
 			'custom-fields',
 			'revisions',
+			'page-attributes'
 		);
 
 		$args = array(
 			'capability_type' => 'post',
-			'has_archive'     => true,
+			'has_archive'     => 'documentation',
 			'labels'          => $labels,
 			'menu_icon'       => 'dashicons-book',
 			'menu_position'   => 30,
 			'public'          => true,
-			'rewrite'         => array( 'slug' => 'documentation', ), // Permalinks format
+			'rewrite'         => array( 'slug' => 'document', 'with_front' => false ),
 			'show_in_rest'    => true,
 			'supports'        => $supports
 		);
@@ -112,9 +122,10 @@ class Documentation_Post_Type_Registrations {
 			'show_ui'           => true,
 			'show_tagcloud'     => true,
 			'hierarchical'      => true,
-			'rewrite'           => array( 'slug' => 'documentation-category' ),
+			'rewrite'           => array( 'slug' => 'documentation', 'with_front' => false, 'hierarchical' => true ),
 			'show_admin_column' => true,
 			'query_var'         => true,
+			'show_in_rest'    => true,
 		);
 
 		$args = apply_filters( 'documentation_post_type_category_args', $args );
@@ -158,6 +169,7 @@ class Documentation_Post_Type_Registrations {
 			'rewrite'           => array( 'slug' => 'documentation-tag' ),
 			'show_admin_column' => true,
 			'query_var'         => true,
+			'show_in_rest'    => true,
 		);
 
 		$args = apply_filters( 'documentation_post_type_tag_args', $args );
@@ -202,6 +214,7 @@ class Documentation_Post_Type_Registrations {
 			'rewrite'           => array( 'slug' => 'document-tag' ),
 			'show_admin_column' => true,
 			'query_var'         => true,
+			'show_in_rest'    => true,
 		);
 
 		$args = apply_filters( 'documentation_post_type_product_args', $args );

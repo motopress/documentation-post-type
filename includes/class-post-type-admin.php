@@ -31,6 +31,10 @@ class Documentation_Post_Type_Admin {
 		add_action( 'right_now_content_table_end', array( $this, 'add_rightnow_counts' ) );
 		add_action( 'dashboard_glance_items', array( $this, 'add_glance_counts' ) );
 
+		// add Menu Order column to admin list table and make it sortable
+		add_filter( "manage_{$this->registration_handler->post_type}_posts_columns", array( $this, 'filter_admin_table_columns' ) );
+		add_action( "manage_{$this->registration_handler->post_type}_posts_custom_column", array( $this, 'render_custom_admin_table_columns' ), 10, 2 );
+		add_filter( "manage_edit-{$this->registration_handler->post_type}_sortable_columns", array( $this, 'filter_admin_table_sortable_columns') );
 	}
 
 	/**
@@ -105,9 +109,9 @@ class Documentation_Post_Type_Admin {
 		$options = '';
 		foreach ( $terms as $term ) {
 			$options .= sprintf(
-				'<option value="%s"%s />%s</option>',
+				'<option value="%s" %s />%s</option>',
 				esc_attr( $term->slug ),
-				selected( $current_tax_slug, $term->slug ),
+				selected( $current_tax_slug, $term->slug, false ),
 				esc_html( $term->name . '(' . $term->count . ')' )
 			);
 		}
@@ -122,6 +126,28 @@ class Documentation_Post_Type_Admin {
 	public function add_glance_counts() {
 		$glancer = new Dashboard_Glancer;
 		$glancer->add( $this->registration_handler->post_type, array( 'publish', 'pending' ) );
+	}
+
+	public function filter_admin_table_columns( $columns ) {
+
+		if ( ! isset( $columns['order'] ) ) {
+			$columns['menu_order'] = 'Order';
+		}
+
+		return $columns;
+	}
+
+	public function render_custom_admin_table_columns( $column_name, $post_id ) {
+
+		if ( 'menu_order' === $column_name ) {
+			echo get_post_field( 'menu_order', $post_id );
+		}
+	}
+
+	public function filter_admin_table_sortable_columns( $columns ) {
+		$columns['menu_order'] = 'menu_order';
+
+		return $columns;
 	}
 
 }

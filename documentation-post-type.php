@@ -9,7 +9,7 @@
  * Plugin Name: Documentation Post Type
  * Plugin URI:  https://github.com/Automattic/documentation-post-type
  * Description: Enables a post type for documentation and related taxonomies.
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      Automattic
  * Author URI:  https://github.com/Automattic/documentation-post-type
  * Text Domain: documentation-post-type

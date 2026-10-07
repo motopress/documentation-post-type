@@ -27,10 +27,6 @@ class Documentation_Post_Type_Admin {
 		// Allow filtering of posts by taxonomy in the admin view
 		add_action( 'restrict_manage_posts', array( $this, 'add_taxonomy_filters' ) );
 
-		// Show post counts in the dashboard
-		add_action( 'right_now_content_table_end', array( $this, 'add_rightnow_counts' ) );
-		add_action( 'dashboard_glance_items', array( $this, 'add_glance_counts' ) );
-
 	}
 
 	/**
@@ -61,13 +57,13 @@ class Documentation_Post_Type_Admin {
 	 * @return string Markup, or empty string if taxonomy has no terms.
 	 */
 	protected function build_taxonomy_filter( $tax_slug ) {
-		$terms = get_terms( $tax_slug );
-		if ( 0 == count( $terms ) ) {
+		$terms = get_terms( array( 'taxonomy' => $tax_slug ) );
+		if ( is_wp_error( $terms ) || empty( $terms ) ) {
 			return '';
 		}
 
 		$tax_name         = $this->get_taxonomy_name_from_slug( $tax_slug );
-		$current_tax_slug = isset( $_GET[$tax_slug] ) ? $_GET[$tax_slug] : false;
+		$current_tax_slug = isset( $_GET[ $tax_slug ] ) ? sanitize_text_field( wp_unslash( $_GET[ $tax_slug ] ) ) : false;
 
 		$filter  = '<select name="' . esc_attr( $tax_slug ) . '" id="' . esc_attr( $tax_slug ) . '" class="postform">';
 		$filter .= '<option value="0">' . esc_html( $tax_name ) .'</option>';
@@ -105,23 +101,13 @@ class Documentation_Post_Type_Admin {
 		$options = '';
 		foreach ( $terms as $term ) {
 			$options .= sprintf(
-				'<option value="%s"%s />%s</option>',
+				'<option value="%s"%s>%s</option>',
 				esc_attr( $term->slug ),
 				selected( $current_tax_slug, $term->slug ),
 				esc_html( $term->name . '(' . $term->count . ')' )
 			);
 		}
 		return $options;
-	}
-
-	/**
-	 * Add counts to "At a Glance" dashboard widget in WP 3.8+
-	 *
-	 * @since 0.1.0
-	 */
-	public function add_glance_counts() {
-		$glancer = new Dashboard_Glancer;
-		$glancer->add( $this->registration_handler->post_type, array( 'publish', 'pending' ) );
 	}
 
 }

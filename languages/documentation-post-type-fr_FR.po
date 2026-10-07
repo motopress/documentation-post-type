@@ -256,12 +256,6 @@ msgstr "Créer un type de contenu et une taxonomie pour de la documentation."
 msgid "Devin Price"
 msgstr "Devin Price"
 
-#~ msgid ""
-#~ "Trying to add At a Glance items to dashboard widget afterhook already fired"
-#~ msgstr ""
-#~ "L'ajout des éléments de At a Glance à l'afterhook du widget du tableau "
-#~ "bord a déjà été déclenché"
-
 #~ msgid "Image"
 #~ msgstr "Image"
 

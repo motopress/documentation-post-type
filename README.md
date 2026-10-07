@@ -8,7 +8,6 @@ Creates a post type for "documentation". It meant primarily for product document
 * Registers a "documentation-category" taxonomy
 * Registers a "documentation-tag" taxonomy
 * Registers a "product-tag" taxonomy
-* Adds the post count to the admin dashboard
 * Translation ready
 
 ### Requirements
@@ -31,4 +30,4 @@ Yes, go ahead. If you're also interested in having metaboxes, you may also want 
 
 ### Credits
 
-Built by [Devin Price](http://www.wptheming.com/).  The "Dashboard Glancer" class and much re-used code from the Portfolio Post Type plugin by [Gary Jones](http://gamajo.com/).
+Built by [Devin Price](http://www.wptheming.com/). Much re-used code from the Portfolio Post Type plugin by [Gary Jones](http://gamajo.com/).

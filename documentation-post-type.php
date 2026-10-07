@@ -40,16 +40,9 @@ register_activation_hook( __FILE__, array( $post_type, 'activate' ) );
 $post_type_registrations->init();
 
 /**
- * Adds styling to the dashboard for the post type and adds docs posts
- * to the "At a Glance" metabox.
+ * Adds admin styling and taxonomy filters for the post type.
  */
 if ( is_admin() ) {
-
-	// Loads for users viewing the WordPress dashboard
-	if ( ! class_exists( 'Dashboard_Glancer' ) ) {
-		require plugin_dir_path( __FILE__ ) . 'includes/class-dashboard-glancer.php';  // WP 3.8
-	}
-
 	require plugin_dir_path( __FILE__ ) . 'includes/class-post-type-admin.php';
 
 	$post_type_admin = new Documentation_Post_Type_Admin( $post_type_registrations );

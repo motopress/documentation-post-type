@@ -49,7 +49,7 @@ class Documentation_Post_Type {
 		$this->registration_handler = $registration_handler;
 
 		// Load plugin text domain
-		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );;
+		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
 		add_filter( 'post_type_link', array( $this, 'post_type_link' ), 1, 2 );
 
@@ -88,23 +88,23 @@ class Documentation_Post_Type {
 	}
 
 	/**
-	 * Add a filter to post_type_link to substitute the category in individual permalinks
+	 * Replace the optional documentation category placeholder in post permalinks.
 	 *
-	 * @link https://wordpress.stackexchange.com/questions/108642/permalinks-custom-post-type-custom-taxonomy-post
-	 *
+	 * @param string  $post_link The generated post permalink.
+	 * @param WP_Post $post      The post object.
+	 * @return string
 	 */
-	public function post_type_link(  $post_link, $post  ) {
-
-		if ( is_object( $post ) && $post->post_type == $this->registration_handler->post_type ) {
-
-			$terms = wp_get_object_terms( $post->ID, Documentation_Post_Type_Registrations::DOCUMENTATION_CATEGORY );
-
-			if( $terms ) {
-				return str_replace( '%documentation_category%' , $terms[0]->slug , $post_link );
-			}
+	public function post_type_link( $post_link, $post ) {
+		if ( ! is_object( $post ) || $post->post_type !== $this->registration_handler->post_type || false === strpos( $post_link, '%documentation_category%' ) ) {
+			return $post_link;
 		}
 
-		return $post_link;
+		$terms = wp_get_object_terms( $post->ID, Documentation_Post_Type_Registrations::DOCUMENTATION_CATEGORY );
+		if ( is_wp_error( $terms ) || empty( $terms ) ) {
+			return $post_link;
+		}
+
+		return str_replace( '%documentation_category%', $terms[0]->slug, $post_link );
 	}
 
 }
